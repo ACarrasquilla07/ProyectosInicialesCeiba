@@ -6,26 +6,59 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		  classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE")
+		  classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: "jacoco"
 
-group = 'com.bibliotecario'
-version = '0.0.1-SNAPSHOT'
+
+group = 'rest'
+
+jar {
+	baseName = 'biblioteca'
+	version = '0.0.1-SNAPSHOT'
+}
+
 sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 
+
 dependencies {
+	compile 'log4j:log4j:1.2.17'
+	compile 'com.h2database:h2:1.4.194'	
+	compile 'org.hibernate:hibernate-core:5.2.9.Final'	
+	      
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.mockito:mockito-all:1.10.19'
+	  
+	   
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile("org.springframework.boot:spring-boot-starter-web:1.5.7.RELEASE")
+    	
+	compile 'org.springframework.data:spring-data-jpa:1.11.7.RELEASE'  //Para crear Spring DATA
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile("org.springframework.boot:spring-boot-starter-web")
+	testCompile("junit:junit")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
 }
+
+repositories {
+    maven {
+        url 'https://repo.spring.io/libs-release'
+    }
+}
+
+

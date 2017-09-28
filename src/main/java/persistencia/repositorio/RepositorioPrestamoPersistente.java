@@ -1,5 +1,6 @@
 package persistencia.repositorio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,14 +21,12 @@ import persistencia.repositorio.jpa.RepositorioLibroJPA;
 public class RepositorioPrestamoPersistente implements RepositorioPrestamo {
 
 	private static final String ISBN = "isbn";
-	private static final String PRESTAMO_FIND_BY_ISBN = "Prestamo.findByIsbn";
-
+	private static final String PRESTAMO_FIND_BY_ISBN = "Prestamo.findByIsbn";	
+	private static final String PRESTAMO_FIND_ALL = "Prestamo.findAll";
 	private EntityManager entityManager;
-
 	private RepositorioLibroJPA repositorioLibroJPA;
-
+	
 	public RepositorioPrestamoPersistente(EntityManager entityManager, RepositorioLibro repositorioLibro) {
-
 		this.entityManager = entityManager;
 		this.repositorioLibroJPA = (RepositorioLibroJPA) repositorioLibro;
 	}
@@ -36,7 +35,6 @@ public class RepositorioPrestamoPersistente implements RepositorioPrestamo {
 	public void agregar(Prestamo prestamo) {
 
 		PrestamoEntity prestamoEntity = buildPrestamoEntity(prestamo);
-
 		entityManager.persist(prestamoEntity);
 	}
 
@@ -58,6 +56,21 @@ public class RepositorioPrestamoPersistente implements RepositorioPrestamo {
 
 		return !resultList.isEmpty() ? (PrestamoEntity) resultList.get(0) : null;
 	}
+	
+	private List<PrestamoEntity> obtenerPrestamosEntity() {
+		Query query = entityManager.createNamedQuery(PRESTAMO_FIND_ALL);
+		return query.getResultList();
+	}
+	
+	@Override
+	public List<Libro> obtenerLibrosPrestados(){
+		List<PrestamoEntity> listaPrestamosE = obtenerPrestamosEntity();
+		List<Libro> listaLibrosPrestados = new ArrayList<>();
+		for(int i = 0; i<listaPrestamosE.size();++i) {
+			listaLibrosPrestados.add(LibroBuilder.convertirADominio( listaPrestamosE.get(i).getLibro() ));
+		}
+		return listaLibrosPrestados;
+	}
 
 	private PrestamoEntity buildPrestamoEntity(Prestamo prestamo) {
 
@@ -66,6 +79,8 @@ public class RepositorioPrestamoPersistente implements RepositorioPrestamo {
 		PrestamoEntity prestamoEntity = new PrestamoEntity();
 		prestamoEntity.setLibro(libroEntity);
 		prestamoEntity.setFechaSolicitud(prestamo.getFechaSolicitud());
+		prestamoEntity.setFechaEntregaMaxima(prestamo.getFechaEntregaMaxima());
+		prestamoEntity.setNombreUsuario(prestamo.getNombreUsuario());
 
 		return prestamoEntity;
 	}

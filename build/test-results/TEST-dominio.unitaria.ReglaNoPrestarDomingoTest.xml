@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dominio.unitaria.ReglaNoPrestarDomingoTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-09-28T13:34:59" hostname="ANDRES-CARRASQUILLA" time="0.0">
+  <properties/>
+  <testcase name="verificarPrestaromingo" classname="dominio.unitaria.ReglaNoPrestarDomingoTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

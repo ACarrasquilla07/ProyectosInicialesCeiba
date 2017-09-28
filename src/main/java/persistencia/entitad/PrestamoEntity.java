@@ -2,16 +2,22 @@ package persistencia.entitad;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity(name="Prestamo")
-@NamedQuery(name = "Prestamo.findByIsbn", query = "SELECT prestamo from Prestamo prestamo where prestamo.libro.isbn = :isbn")
+@NamedQueries({
+	@NamedQuery(name = "Prestamo.findByIsbn", query = "SELECT prestamo from Prestamo prestamo where prestamo.libro.isbn = :isbn"),
+	@NamedQuery(name = "Prestamo.findAll", query = "SELECT prestamo from Prestamo prestamo")
+})
+
 public class PrestamoEntity {
 
 	@Id
@@ -21,11 +27,11 @@ public class PrestamoEntity {
 	@ManyToOne
 	@JoinColumn(name="ID_LIBRO",referencedColumnName="id")
 	private LibroEntity libro;
-	
+	@Column
 	private Date fechaSolicitud;
-	
+	@Column
 	private Date fechaEntregaMaxima;
-	
+	@Column
 	private String nombreUsuario;
 	
 	public Long getId() {
@@ -59,4 +65,13 @@ public class PrestamoEntity {
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
+
+	public void setFechaEntregaMaxima(Date fechaEntregaMaxima) {
+		this.fechaEntregaMaxima = fechaEntregaMaxima;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+	
 }

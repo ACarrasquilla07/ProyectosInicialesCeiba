@@ -1,7 +1,6 @@
 package persistencia.sistema;
 
 import javax.persistence.EntityManager;
-
 import dominio.repositorio.RepositorioLibro;
 import dominio.repositorio.RepositorioPrestamo;
 import persistencia.conexion.ConexionJPA;
@@ -30,5 +29,9 @@ public class SistemaDePersistencia {
 
 	public void terminar() {
 		entityManager.getTransaction().commit();
+	}
+
+	public EntityManager getEntityManager() { 
+		return entityManager;   //    ------------ Creado por Andrés --------------------------------
 	}
 }
