@@ -1,0 +1,13 @@
+dominio
+dominio.excepcion
+dominio.reglas
+dominio.repositorio
+dominio.util
+persistencia.builder
+persistencia.conexion
+persistencia.entitad
+persistencia.repositorio
+persistencia.repositorio.jpa
+persistencia.sistema
+rest
+rest.dto

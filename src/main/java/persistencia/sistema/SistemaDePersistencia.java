@@ -32,6 +32,6 @@ public class SistemaDePersistencia {
 	}
 
 	public EntityManager getEntityManager() { 
-		return entityManager;   //    ------------ Creado por Andrés --------------------------------
+		return entityManager;   
 	}
 }
