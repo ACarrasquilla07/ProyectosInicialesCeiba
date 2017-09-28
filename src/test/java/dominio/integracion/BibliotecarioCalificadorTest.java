@@ -98,7 +98,7 @@ public class BibliotecarioCalificadorTest {
 
 		} catch (PrestamoException e) {
 			// assert
-			Assert.assertEquals("los libros palíndromos solo se pueden utilizar en la biblioteca", e.getMessage());
+			Assert.assertEquals("los libros palindromos solo se pueden utilizar en la biblioteca", e.getMessage());
 			Assert.assertNull(repositorioPrestamo.obtenerLibroPrestadoPorIsbn("1221"));
 		}
 	}
