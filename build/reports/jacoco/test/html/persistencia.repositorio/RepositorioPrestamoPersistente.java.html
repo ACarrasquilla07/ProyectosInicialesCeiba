@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RepositorioPrestamoPersistente.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">biblioteca</a> &gt; <a href="index.source.html" class="el_package">persistencia.repositorio</a> &gt; <span class="el_source">RepositorioPrestamoPersistente.java</span></div><h1>RepositorioPrestamoPersistente.java</h1><pre class="source lang-java linenums">package persistencia.repositorio;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import dominio.Libro;
+import dominio.Prestamo;
+import dominio.repositorio.RepositorioLibro;
+import dominio.repositorio.RepositorioPrestamo;
+import persistencia.builder.LibroBuilder;
+import persistencia.entitad.LibroEntity;
+import persistencia.entitad.PrestamoEntity;
+import persistencia.repositorio.jpa.RepositorioLibroJPA;
+
+@Repository
+public class RepositorioPrestamoPersistente implements RepositorioPrestamo {
+
+	private static final String ISBN = &quot;isbn&quot;;
+	private static final String PRESTAMO_FIND_BY_ISBN = &quot;Prestamo.findByIsbn&quot;;	
+	private static final String PRESTAMO_FIND_ALL = &quot;Prestamo.findAll&quot;;
+	private EntityManager entityManager;
+	private RepositorioLibroJPA repositorioLibroJPA;
+	
+<span class="fc" id="L29">	public RepositorioPrestamoPersistente(EntityManager entityManager, RepositorioLibro repositorioLibro) {</span>
+<span class="fc" id="L30">		this.entityManager = entityManager;</span>
+<span class="fc" id="L31">		this.repositorioLibroJPA = (RepositorioLibroJPA) repositorioLibro;</span>
+<span class="fc" id="L32">	}</span>
+
+	@Override
+	public void agregar(Prestamo prestamo) {
+
+<span class="fc" id="L37">		PrestamoEntity prestamoEntity = buildPrestamoEntity(prestamo);</span>
+<span class="fc" id="L38">		entityManager.persist(prestamoEntity);</span>
+<span class="fc" id="L39">	}</span>
+
+	@Override
+	public Libro obtenerLibroPrestadoPorIsbn(String isbn) {
+
+<span class="fc" id="L44">		PrestamoEntity prestamoEntity = obtenerPrestamoEntityPorIsbn(isbn);</span>
+
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		return LibroBuilder.convertirADominio(prestamoEntity != null ? prestamoEntity.getLibro() : null);</span>
+	}
+
+	@SuppressWarnings(&quot;rawtypes&quot;)
+	private PrestamoEntity obtenerPrestamoEntityPorIsbn(String isbn) {
+
+<span class="fc" id="L52">		Query query = entityManager.createNamedQuery(PRESTAMO_FIND_BY_ISBN);</span>
+<span class="fc" id="L53">		query.setParameter(ISBN, isbn);</span>
+
+<span class="fc" id="L55">		List resultList = query.getResultList();</span>
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		return !resultList.isEmpty() ? (PrestamoEntity) resultList.get(0) : null;</span>
+	}
+	
+	private List&lt;PrestamoEntity&gt; obtenerPrestamosEntity() {
+<span class="nc" id="L61">		Query query = entityManager.createNamedQuery(PRESTAMO_FIND_ALL);</span>
+<span class="nc" id="L62">		return query.getResultList();</span>
+	}
+	
+	@Override
+	public List&lt;Libro&gt; obtenerLibrosPrestados(){
+<span class="nc" id="L67">		List&lt;PrestamoEntity&gt; listaPrestamosE = obtenerPrestamosEntity();</span>
+<span class="nc" id="L68">		List&lt;Libro&gt; listaLibrosPrestados = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">		for(int i = 0; i&lt;listaPrestamosE.size();++i) {</span>
+<span class="nc" id="L70">			listaLibrosPrestados.add(LibroBuilder.convertirADominio( listaPrestamosE.get(i).getLibro() ));</span>
+		}
+<span class="nc" id="L72">		return listaLibrosPrestados;</span>
+	}
+
+	private PrestamoEntity buildPrestamoEntity(Prestamo prestamo) {
+
+<span class="fc" id="L77">		LibroEntity libroEntity = repositorioLibroJPA.obtenerLibroEntityPorIsbn(prestamo.getLibro().getIsbn());</span>
+
+<span class="fc" id="L79">		PrestamoEntity prestamoEntity = new PrestamoEntity();</span>
+<span class="fc" id="L80">		prestamoEntity.setLibro(libroEntity);</span>
+<span class="fc" id="L81">		prestamoEntity.setFechaSolicitud(prestamo.getFechaSolicitud());</span>
+<span class="fc" id="L82">		prestamoEntity.setFechaEntregaMaxima(prestamo.getFechaEntregaMaxima());</span>
+<span class="fc" id="L83">		prestamoEntity.setNombreUsuario(prestamo.getNombreUsuario());</span>
+
+<span class="fc" id="L85">		return prestamoEntity;</span>
+	}
+
+	@Override
+	public Prestamo obtener(String isbn) {
+
+<span class="fc" id="L91">		PrestamoEntity prestamoEntity = obtenerPrestamoEntityPorIsbn(isbn);</span>
+
+<span class="fc" id="L93">		return new Prestamo(prestamoEntity.getFechaSolicitud(),</span>
+<span class="fc" id="L94">				LibroBuilder.convertirADominio(prestamoEntity.getLibro()), prestamoEntity.getFechaEntregaMaxima(),</span>
+<span class="fc" id="L95">				prestamoEntity.getNombreUsuario());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

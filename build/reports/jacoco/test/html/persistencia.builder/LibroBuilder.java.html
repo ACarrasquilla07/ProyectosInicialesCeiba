@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LibroBuilder.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">biblioteca</a> &gt; <a href="index.source.html" class="el_package">persistencia.builder</a> &gt; <span class="el_source">LibroBuilder.java</span></div><h1>LibroBuilder.java</h1><pre class="source lang-java linenums">package persistencia.builder;
+
+import dominio.Libro;
+import persistencia.entitad.LibroEntity;
+
+public class LibroBuilder {
+	
+<span class="nc" id="L8">	private LibroBuilder() {}</span>
+	
+	public static Libro convertirADominio(LibroEntity libroEntity) {
+<span class="fc" id="L11">		Libro libro = null;</span>
+<span class="fc bfc" id="L12" title="All 2 branches covered.">		if(libroEntity != null) {</span>
+<span class="fc" id="L13">			libro = new Libro(libroEntity.getIsbn(), libroEntity.getTitulo(), libroEntity.getAnio());</span>
+		}
+<span class="fc" id="L15">		return libro;</span>
+	}
+	
+	public static LibroEntity convertirAEntity(Libro libro) {
+<span class="fc" id="L19">		LibroEntity libroEntity = new LibroEntity();</span>
+<span class="fc" id="L20">		libroEntity.setTitulo(libro.getTitulo());</span>
+<span class="fc" id="L21">		libroEntity.setIsbn(libro.getIsbn());</span>
+<span class="fc" id="L22">		libroEntity.setAnio(libro.getAnio());</span>
+<span class="fc" id="L23">		return libroEntity;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
