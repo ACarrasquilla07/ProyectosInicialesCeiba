@@ -39,19 +39,27 @@ public class UtilidadTest {
 		SimpleDateFormat formatoDelTexto2 = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat formatoDelTexto3 = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat formatoDelTexto4 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatoDelTexto5 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatoDelTexto6 = new SimpleDateFormat("yyyy-MM-dd");
 		String strFecha1 = "2017-09-15";
 		String strFecha2 = "2017-09-03";
 		String strFecha3 ="2017-05-24"; 
 		String strFecha4 = "2017-05-26";
+		String strFecha5="2017-09-30";
+		String strFecha6 = "2017-10-28";
 		Date fecha1 = null;
 		Date fecha2 = null;
 		Date fecha3 = null;
 		Date fecha4 = null;
+		Date fecha5 = null;
+		Date fecha6= null;
 		try {
 			fecha1 = formatoDelTexto.parse(strFecha1);
 			fecha2 = formatoDelTexto2.parse(strFecha2);
 			fecha3 = formatoDelTexto3.parse(strFecha3);
 			fecha4 = formatoDelTexto4.parse(strFecha4);
+			fecha5 = formatoDelTexto5.parse(strFecha5);
+			fecha6 = formatoDelTexto6.parse(strFecha6);
 		} catch (ParseException ex) {
 			ex.printStackTrace();	
 		}
@@ -59,14 +67,20 @@ public class UtilidadTest {
 		Date fechaLimite2 = Utilidad.sumar15DiasSinDomingos(fecha2);
 		Date fechaLimite3 = Utilidad.sumar15DiasSinDomingos(fecha3);
 		Date fechaLimite4 = Utilidad.sumar15DiasSinDomingos(fecha4);
+		Date fechaLimite5 = Utilidad.sumar15DiasSinDomingos(fecha5);
+		Date fechaLimite6 = Utilidad.sumar15DiasSinDomingos(fecha6);
 		Calendar calen1 = Utilidad.dateToCalendar(fechaLimite1);
 		Calendar calen2 = Utilidad.dateToCalendar(fechaLimite2);
 		Calendar calen3 = Utilidad.dateToCalendar(fechaLimite3);
 		Calendar calen4 = Utilidad.dateToCalendar(fechaLimite4);
+		Calendar calen5 = Utilidad.dateToCalendar(fechaLimite5);
+		Calendar calen6 = Utilidad.dateToCalendar(fechaLimite6);
 		assertEquals(2, calen1.get(Calendar.DAY_OF_WEEK));  //Debe ser 2
 		assertEquals(4, calen2.get(Calendar.DAY_OF_WEEK));  //Debe ser 4
 		assertEquals(6, calen3.get(Calendar.DAY_OF_WEEK));  
 		assertEquals(2, calen4.get(Calendar.DAY_OF_WEEK));  
+		assertEquals(3, calen5.get(Calendar.DAY_OF_WEEK));
+		assertEquals(3, calen6.get(Calendar.DAY_OF_WEEK));
 	}
 }
 

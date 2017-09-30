@@ -37,8 +37,11 @@ public class Utilidad {
 		log.info(mensaje);		
 	}
 	public static Date sumar15DiasSinDomingos(Date fecha){	
-		Date fecha1 = fecha;
+		Date fecha1 = fecha;		
 		Calendar calen2 = dateToCalendar(fecha1);
+		if(calen2.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
+			fecha1 = variarFecha(fecha1,OPCION_DIA, 1);
+		}
 		if(calen2.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY){
 			fecha1 = variarFecha(fecha1,OPCION_DIA, Calendar.SUNDAY);
 			

@@ -6,11 +6,8 @@ public class CalificadorUtil {
 	
 	public static Calendar sumarDiasSinContarDomingos(Calendar fechaAsumar, int diasASumar){		
 		int diasOperar = diasASumar - 1;
-		
 		while(diasOperar > 0){
-			
 			fechaAsumar.add(Calendar.DATE, 1);
-			
 			diasOperar = disminuirDiaSiNoEsDomingo(fechaAsumar, diasOperar);
 		}		
 		return fechaAsumar;
